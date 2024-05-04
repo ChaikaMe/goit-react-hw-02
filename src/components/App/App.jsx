@@ -29,20 +29,23 @@ export default function App() {
     }
 
     const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
-    const handleFeedbackChange = (newFeedback) => {
-        setFeedback(newFeedback);
+    const positiveRate = (Math.round((feedback.good / totalFeedback) * 100));
+    const updateFeedback = (feedbackType) => {
+        setFeedback({ ...feedback, [feedbackType]: feedback[feedbackType] + 1 });
     };
     return (
         <>
             <Description />
             <Options
-                feedback={feedback}
-                onFeedbackChange={handleFeedbackChange}
+                updateFeedback={updateFeedback}
                 totalFeedback={totalFeedback}
                 feedbackReset={feedbackReset} />
             {totalFeedback == 0 ?
                 (<Notification />) :
-                (<Feedback feedback={feedback} totalFeedback={totalFeedback} />)}
+                (<Feedback
+                    feedback={feedback}
+                    totalFeedback={totalFeedback}
+                    positiveRate={positiveRate}/>)}
 
         </>
     );
